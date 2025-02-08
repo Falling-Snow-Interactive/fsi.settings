@@ -1,0 +1,43 @@
+using System.Collections.Generic;
+using UnityEditor;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+namespace [NAMESPACE].Editor
+{
+    public class [NAME]SettingsProvider : SettingsProvider
+    {
+        private const string SETTINGS_PATH = "[PROJECT]/[NAME]";
+        
+        private SerializedObject serializedSettings;
+        
+        public [NAME]SettingsProvider(string path, SettingsScope scopes, IEnumerable<string> keywords = null) 
+            : base(path, scopes, keywords)
+        {
+        }
+        
+        [SettingsProvider]
+        public static SettingsProvider CreateMyCustomSettingsProvider()
+        {
+            return new [NAME]SettingsProvider(SETTINGS_PATH, SettingsScope.Project);
+        }
+        
+        public override void OnActivate(string searchContext, VisualElement rootElement)
+        {
+            serializedSettings = [NAME]Settings.GetSerializedSettings();
+        }
+        
+        public override void OnGUI(string searchContext)
+        {
+            // EditorGUILayout.PropertyField(serializedSettings.FindProperty("prop"));
+            
+            EditorGUILayout.Space(20);
+            if (GUILayout.Button("Save"))
+            {
+                serializedSettings.ApplyModifiedProperties();
+            }
+            
+            serializedSettings.ApplyModifiedProperties();
+        }
+    }
+}

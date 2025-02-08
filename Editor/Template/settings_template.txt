@@ -1,0 +1,51 @@
+using UnityEditor;
+using UnityEngine;
+
+namespace [NAMESPACE]
+{
+    public class [NAME]Settings : ScriptableObject
+    {
+        private const string RESOURCE_PATH = "Settings/[NAME]Settings";
+        private const string FULL_PATH = "Assets/Resources/" + RESOURCE_PATH + ".asset";
+
+        private static [NAME]Settings _settings;
+        public static [NAMESettings Settings => _settings ??= GetOrCreateSettings();
+        
+        #region Settings
+        
+        public static [NAME]Settings GetOrCreateSettings()
+        {
+            var settings = Resources.Load<[NAME]Settings>(RESOURCE_PATH);
+
+            #if UNITY_EDITOR
+            if (!settings)
+            {
+                if (!AssetDatabase.IsValidFolder("Assets/Resources"))
+                {
+                    AssetDatabase.CreateFolder("Assets", "Resources");
+                }
+
+                if (!AssetDatabase.IsValidFolder("Assets/Resources/Settings"))
+                {
+                    AssetDatabase.CreateFolder("Assets/Resources", "Settings");
+                }
+
+                settings = CreateInstance<[NAME]Settings>();
+                AssetDatabase.CreateAsset(settings, FULL_PATH);
+                AssetDatabase.SaveAssets();
+            }
+            #endif
+
+            return settings;
+        }
+
+        #if UNITY_EDITOR
+        public static SerializedObject GetSerializedSettings()
+        {
+            return new SerializedObject(GetOrCreateSettings());
+        }
+        #endif
+        
+        #endregion
+    }
+}
