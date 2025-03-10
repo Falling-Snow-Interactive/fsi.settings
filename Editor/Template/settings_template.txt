@@ -9,7 +9,7 @@ namespace [NAMESPACE]
         private const string FULL_PATH = "Assets/Resources/" + RESOURCE_PATH + ".asset";
 
         private static [NAME]Settings _settings;
-        public static [NAMESettings Settings => _settings ??= GetOrCreateSettings();
+        public static [NAME]Settings Settings => _settings ??= GetOrCreateSettings();
         
         #region Settings
         

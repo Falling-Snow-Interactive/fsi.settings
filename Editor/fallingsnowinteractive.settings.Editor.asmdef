@@ -1,8 +1,12 @@
 {
-    "name": "FsiSettings",
-    "rootNamespace": "fsi.settings",
-    "references": [],
-    "includePlatforms": [],
+    "name": "fallingsnowinteractive.settings.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:0a0ec71ae2d72451482f5b56a8255ed4"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
     "overrideReferences": false,
