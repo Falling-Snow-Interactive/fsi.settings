@@ -29,5 +29,10 @@ namespace fsi.settings.Informations
 
             return informationLookup;
         }
+        
+        public void CreateLookup()
+        {
+            informationLookup = BuildLookup();
+        }
     }
 }
