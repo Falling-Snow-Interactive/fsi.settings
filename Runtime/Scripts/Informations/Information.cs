@@ -10,18 +10,20 @@ namespace fsi.settings.Informations
         [SerializeField]
         private string name;
         
-        [SerializeField]
-        private T type;
-        public T Type => type;
+        public abstract T Type { get; }
         
         public void OnBeforeSerialize()
         {
-            name = type.ToString();
+            if (Type != null)
+            {
+                name = Type.ToString();
+            }
+            else
+            {
+                name = "not set";
+            }
         }
 
-        public void OnAfterDeserialize()
-        {
-            
-        }
+        public void OnAfterDeserialize() { }
     }
 }

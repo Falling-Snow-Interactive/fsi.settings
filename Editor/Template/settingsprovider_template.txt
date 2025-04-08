@@ -1,43 +1,35 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using fsi.prototyping.Spacers;
 using UnityEngine.UIElements;
 
 namespace [NAMESPACE].Editor
 {
-    public class [NAME]SettingsProvider : SettingsProvider
+    public static class [NAME]SettingsProvider
     {
-        private const string SETTINGS_PATH = "[PROJECT]/[NAME]";
-        
-        private SerializedObject serializedSettings;
-        
-        public [NAME]SettingsProvider(string path, SettingsScope scopes, IEnumerable<string> keywords = null) 
-            : base(path, scopes, keywords)
-        {
-        }
-        
         [SettingsProvider]
-        public static SettingsProvider CreateMyCustomSettingsProvider()
+        public static SettingsProvider CreateSettingsProvider()
         {
-            return new [NAME]SettingsProvider(SETTINGS_PATH, SettingsScope.Project);
-        }
-        
-        public override void OnActivate(string searchContext, VisualElement rootElement)
-        {
-            serializedSettings = [NAME]Settings.GetSerializedSettings();
-        }
-        
-        public override void OnGUI(string searchContext)
-        {
-            // EditorGUILayout.PropertyField(serializedSettings.FindProperty("prop"));
+            SettingsProvider provider = new("Fantazee/[NAME]", SettingsScope.Project)
+                                        {
+                                            label = "[NAME]",
+                                            activateHandler = OnActivate,
+                                        };
             
-            EditorGUILayout.Space(20);
-            if (GUILayout.Button("Save"))
-            {
-                serializedSettings.ApplyModifiedProperties();
-            }
+            return provider;
+        }
+    
+        private static void OnActivate(string searchContext, VisualElement root)
+        {
+            SerializedObject settingsProp = [Name]Settings.GetSerializedSettings();
             
-            serializedSettings.ApplyModifiedProperties();
+            Label title = new Header(0, "[NAME] Settings");
+            root.Add(title);
+            
+            root.Add(Spacer.Wide());
+            
+            root.Bind(settingsProp);
         }
     }
 }

@@ -10,6 +10,7 @@ namespace fsi.settings.Informations
     {
         [SerializeField]
         private List<TInfo> information;
+        public List<TInfo> Information => information;
 
         private Dictionary<T, TInfo> informationLookup;
 
