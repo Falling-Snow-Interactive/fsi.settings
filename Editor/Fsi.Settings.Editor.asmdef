@@ -1,6 +1,6 @@
 {
-    "name": "fallingsnowinteractive.settings.Editor",
-    "rootNamespace": "",
+    "name": "Fsi.Settings.Editor",
+    "rootNamespace": "Fsi.Settings",
     "references": [
         "GUID:0a0ec71ae2d72451482f5b56a8255ed4"
     ],

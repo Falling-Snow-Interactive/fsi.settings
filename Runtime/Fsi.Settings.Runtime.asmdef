@@ -1,6 +1,6 @@
 {
-    "name": "fallingsnowinteractive.settings",
-    "rootNamespace": "fsi.settings",
+    "name": "Fsi.Settings.Runtime",
+    "rootNamespace": "Fsi.Settings",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
