@@ -60,10 +60,15 @@ namespace Fsi.Settings
 			              {
 				              style =
 				              {
-					              marginTop = 0,
-					              marginLeft = 10,
-					              marginRight = 10,
-					              marginBottom = 0
+					              paddingTop = 10,
+					              paddingBottom = 10,
+					              paddingLeft = 10,
+					              paddingRight = 10,
+					              
+					              marginTop = 5,
+					              marginBottom = 5,
+					              marginLeft = 5,
+					              marginRight = 5,
 				              }
 			              };
 
@@ -83,14 +88,47 @@ namespace Fsi.Settings
 			return section;
 		}
 		
-		public static VisualElement CreateIMGUISection(SerializedObject serializedObject, string title, string[] propertyNames)
+		public static VisualElement CreateCategory(SerializedObject serializedObject, string category, string[] propertyNames)
 		{
-			var section = new VisualElement
+			var section = new Box
 			              {
 				              style =
 				              {
-					              marginTop = 10,
-					              marginBottom = 10
+					              marginTop = 0,
+					              marginLeft = 10,
+					              marginRight = 10,
+					              marginBottom = 0
+				              }
+			              };
+
+			var label = LabelUtility.Category(category);
+			section.Add(label);
+
+			foreach (string propName in propertyNames)
+			{
+				var prop = new PropertyField(serializedObject.FindProperty(propName));
+				prop.Bind(serializedObject);
+				section.Add(prop);
+			}
+
+			return section;
+		}
+		
+		public static VisualElement CreateIMGUISection(SerializedObject serializedObject, string title, string[] propertyNames)
+		{
+			var section = new Box
+			              {
+				              style =
+				              {
+					              paddingTop = 10,
+					              paddingBottom = 10,
+					              paddingLeft = 10,
+					              paddingRight = 10,
+					              
+					              marginTop = 5,
+					              marginBottom = 5,
+					              marginLeft = 5,
+					              marginRight = 5,
 				              }
 			              };
 
