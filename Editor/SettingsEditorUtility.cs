@@ -2,6 +2,7 @@ using Fsi.Ui.Labels;
 using Fsi.Ui.Spacers;
 using UnityEditor;
 using UnityEditor.UIElements;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Fsi.Settings
@@ -46,9 +47,10 @@ namespace Fsi.Settings
 
 			foreach (string propName in propertyNames)
 			{
-				var prop = new PropertyField(serializedObject.FindProperty(propName));
-				prop.Bind(serializedObject);
-				section.Add(prop);
+				SerializedProperty prop = serializedObject.FindProperty(propName);
+				PropertyField field = new(prop);
+				field.BindProperty(serializedObject);
+				section.Add(field);
 			}
 
 			return section;
@@ -77,12 +79,10 @@ namespace Fsi.Settings
 
 			foreach ((string,string) p in propertyNames)
 			{
-				var prop = new PropertyField(serializedObject.FindProperty(p.Item1))
-				           {
-					           label = p.Item2
-				           };
-				prop.Bind(serializedObject);
-				section.Add(prop);
+				SerializedProperty prop = serializedObject.FindProperty(p.Item1);
+				PropertyField field = new(prop);
+				field.Bind(serializedObject);
+				section.Add(field);
 			}
 
 			return section;

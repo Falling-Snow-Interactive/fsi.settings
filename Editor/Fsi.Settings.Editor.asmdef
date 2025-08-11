@@ -3,7 +3,8 @@
     "rootNamespace": "Fsi.Settings",
     "references": [
         "GUID:0a0ec71ae2d72451482f5b56a8255ed4",
-        "GUID:d01539a91a51f41e884d80a7bdf27f86"
+        "GUID:d01539a91a51f41e884d80a7bdf27f86",
+        "GUID:343deaaf83e0cee4ca978e7df0b80d21"
     ],
     "includePlatforms": [
         "Editor"
