@@ -16,102 +16,51 @@ namespace Fsi.Settings
 			return field;
 		}
 
-		public static VisualElement CreateTitle(string title, string subtitle)
+		public static VisualElement CreateTitle(string title, string description)
 		{
 			VisualElement titleSection = new() { style = { flexGrow = 0, flexShrink = 0 } };
 			Label titleLabel = LabelUtility.Title(title);
-			Label subtitleLabel = new Label(subtitle);
+			Label descriptionLabel = new Label(description);
 			
 			titleSection.Add(titleLabel);
-			titleSection.Add(subtitleLabel);
+			titleSection.Add(descriptionLabel);
 			titleSection.Add(new Spacer());
 
 			return titleSection;
 		}
 
-		public static VisualElement CreateSection(SerializedObject serializedObject, string title, string[] propertyNames)
+		public static VisualElement CreateSection(string name, VisualElement[] categories)
 		{
-			var section = new Box
-			              {
-				              style =
-				              {
-					              marginTop = 0,
-					              marginLeft = 10,
-					              marginRight = 10,
-					              marginBottom = 0
-				              }
-			              };
+			var foldout = new Foldout() { text = name, value = EditorPrefs.GetBool($"Section.{name}", false) };
+			foldout.RegisterValueChangedCallback(evt =>
+			                                     {
+				                                     EditorPrefs.SetBool($"Section.{name}", foldout.value);
+			                                     });
 
-			var label = LabelUtility.Section(title);
-			section.Add(label);
-
-			foreach (string propName in propertyNames)
+			foreach (var cat in categories)
 			{
-				SerializedProperty prop = serializedObject.FindProperty(propName);
-				PropertyField field = new(prop);
-				field.BindProperty(serializedObject);
-				section.Add(field);
+				foldout.Add(cat);
 			}
 
-			return section;
+			return foldout;
 		}
 		
-		public static VisualElement CreateSection(SerializedObject serializedObject, string title, (string,string)[] propertyNames)
+		public static VisualElement CreateCategory(SerializedObject serializedObject, string name, string[] properties)
 		{
-			var section = new Box
-			              {
-				              style =
-				              {
-					              paddingTop = 10,
-					              paddingBottom = 10,
-					              paddingLeft = 10,
-					              paddingRight = 10,
-					              
-					              marginTop = 5,
-					              marginBottom = 5,
-					              marginLeft = 5,
-					              marginRight = 5,
-				              }
-			              };
+			var foldout = new Foldout() { text = name, value = EditorPrefs.GetBool($"Category.{name}", false) };
+			foldout.RegisterValueChangedCallback(evt =>
+			                                     {
+				                                     EditorPrefs.SetBool($"Category.{name}", evt.newValue);
+			                                     });
 
-			var label = LabelUtility.Section(title);
-			section.Add(label);
-
-			foreach ((string,string) p in propertyNames)
+			foreach (string p in properties)
 			{
-				SerializedProperty prop = serializedObject.FindProperty(p.Item1);
-				PropertyField field = new(prop);
-				field.Bind(serializedObject);
-				section.Add(field);
-			}
-
-			return section;
-		}
-		
-		public static VisualElement CreateCategory(SerializedObject serializedObject, string category, string[] propertyNames)
-		{
-			var section = new Box
-			              {
-				              style =
-				              {
-					              marginTop = 0,
-					              marginLeft = 10,
-					              marginRight = 10,
-					              marginBottom = 0
-				              }
-			              };
-
-			var label = LabelUtility.Category(category);
-			section.Add(label);
-
-			foreach (string propName in propertyNames)
-			{
-				var prop = new PropertyField(serializedObject.FindProperty(propName));
+				var prop = new PropertyField(serializedObject.FindProperty(p));
 				prop.Bind(serializedObject);
-				section.Add(prop);
+				foldout.Add(prop);
 			}
 
-			return section;
+			return foldout;
 		}
 		
 		public static VisualElement CreateIMGUISection(SerializedObject serializedObject, string title, string[] propertyNames)
