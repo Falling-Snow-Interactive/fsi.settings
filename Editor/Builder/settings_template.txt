@@ -7,7 +7,7 @@ public class [NAME]Settings : ScriptableObject
     private const string FullPath = "Assets/Resources/" + ResourcePath + ".asset";
 
     private static [NAME]Settings settings;
-    public static [NAME]Settings Settings => _settings ??= GetOrCreateSettings();
+    public static [NAME]Settings Settings => settings ??= GetOrCreateSettings();
 
     #region Settings
 

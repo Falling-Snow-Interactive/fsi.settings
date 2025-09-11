@@ -14,16 +14,15 @@ namespace fsi.settings.Informations
         
         public void OnBeforeSerialize()
         {
-            if (Type != null)
-            {
-                name = Type.ToString();
-            }
-            else
-            {
-                name = "not set";
-            }
+            name = ToString();
         }
 
         public void OnAfterDeserialize() { }
+
+        public override string ToString()
+        {
+            string s = Type != null ? Type.ToString() : "not set";
+            return s;
+        }
     }
 }

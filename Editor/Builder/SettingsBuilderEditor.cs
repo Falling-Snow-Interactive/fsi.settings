@@ -115,7 +115,9 @@ namespace Fsi.Settings.Builder
             }
 
             // Replace placeholder
-            string providerOutput = providerTemplate.text.Replace("[NAME]", name);
+            string providerOutput = providerTemplate.text
+                .Replace("[NAME]", name)
+                .Replace("[PROJECT]", Application.productName);
 
             // Ensure Editor directory exists under the chosen path
             string editorDir = Path.Combine(path, "Editor");
