@@ -16,7 +16,7 @@ namespace Fsi.Settings.Builder
         private Button locationButton;
         private TextField nameField;
 
-        [MenuItem("FSI/Settings Builder")]
+        [MenuItem("Assets/Create/FSI/Settings")]
         public static void OpenWindow()
         {
             SettingsBuilderEditor wnd = GetWindow<SettingsBuilderEditor>();
@@ -31,6 +31,8 @@ namespace Fsi.Settings.Builder
             locationPath = root.Q<Label>("location_path");
             locationButton = root.Q<Button>("location_button");
             nameField = root.Q<TextField>("name_field");
+
+            locationPath.text = AssetDatabase.GetAssetPath(Selection.activeObject);
 
             locationButton.clicked += () =>
                                       {

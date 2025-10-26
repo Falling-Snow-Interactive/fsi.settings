@@ -18,6 +18,11 @@ public static class [NAME]SettingsProvider
 
     private static void OnActivate(string searchContext, VisualElement root)
     {
+        root.style.marginTop = 5;
+        root.style.marginRight = 5;
+        root.style.marginLeft = 5;
+        root.style.marginBottom = 5;
+    
         SerializedObject settingsProp = [NAME]Settings.GetSerializedSettings();
         
         Label title = new("[NAME] Settings");
