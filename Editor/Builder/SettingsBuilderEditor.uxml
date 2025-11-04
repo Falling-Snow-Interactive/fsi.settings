@@ -8,12 +8,12 @@
         <engine:VisualElement name="settings" style="flex-grow: 0;">
             <engine:VisualElement name="location_entry" style="flex-grow: 0; flex-direction: row;">
                 <engine:Label text="Location" name="location_text" style="width: 33%;" />
-                <engine:Label text="Label" name="location_path" style="width: 34%;" />
+                <engine:Label text="Path" name="location_path" style="width: 34%;" />
                 <engine:Button text="Choose Folder" name="location_button" style="width: 33%;" />
             </engine:VisualElement>
             <engine:VisualElement name="name_entry" style="flex-grow: 0; flex-direction: row;">
                 <engine:Label text="Name" name="name_text" style="width: 33%;" />
-                <engine:TextField placeholder-text="filler text" name="name_field" style="width: 66%;" />
+                <engine:TextField placeholder-text="Enter name..." name="name_field" hide-placeholder-on-focus="true" style="width: 66%;" />
             </engine:VisualElement>
         </engine:VisualElement>
         <Fsi.Ui.Spacers.Spacer />
