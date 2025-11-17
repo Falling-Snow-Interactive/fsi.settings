@@ -1,21 +1,53 @@
+using System;
 using Fsi.Ui.Labels;
 using Fsi.Ui.Spacers;
 using UnityEditor;
 using UnityEditor.UIElements;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Fsi.Settings
 {
 	public static class SettingsEditorUtility
 	{
+		private const float SettingsMargin = 5f;
+		
+		public static VisualElement CreateSettingsPage(SerializedObject prop, string name)
+		{
+			ScrollView scroll = new()
+			                    {
+				                    style =
+				                    {
+					                    marginTop = SettingsMargin,
+					                    marginRight = SettingsMargin,
+					                    marginBottom = SettingsMargin,
+					                    marginLeft = SettingsMargin,
+				                    }
+			                    };
+            
+			Label title = new($"{name} Settings");
+			scroll.Add(title);
+			scroll.Add(new Spacer());
+			// Can maybe put a toolbar here
+			scroll.Add(new Spacer());
+			scroll.Add(new InspectorElement(prop));
+			scroll.Add(new Spacer());
+			
+			scroll.Bind(prop);
+
+			return scroll;
+		}
+		
+		#region Obsolete
+		
+		[Obsolete]
 		public static VisualElement CreateSettingsProperty(string name, SerializedObject serializedObject)
 		{
 			SerializedProperty property = serializedObject.FindProperty(name);
 			PropertyField field = new(property);
 			return field;
 		}
-
+		
+		[Obsolete]
 		public static VisualElement CreateTitle(string title, string description)
 		{
 			VisualElement titleSection = new() { style = { flexGrow = 0, flexShrink = 0 } };
@@ -29,6 +61,7 @@ namespace Fsi.Settings
 			return titleSection;
 		}
 
+		[Obsolete]
 		public static VisualElement CreateSection(string name, VisualElement[] categories)
 		{
 			var foldout = new Foldout() { text = name, value = EditorPrefs.GetBool($"Section.{name}", false) };
@@ -45,6 +78,7 @@ namespace Fsi.Settings
 			return foldout;
 		}
 		
+		[Obsolete]
 		public static VisualElement CreateCategory(SerializedObject serializedObject, string name, string[] properties)
 		{
 			var foldout = new Foldout() { text = name, value = EditorPrefs.GetBool($"Category.{name}", false) };
@@ -63,6 +97,7 @@ namespace Fsi.Settings
 			return foldout;
 		}
 		
+		[Obsolete]
 		public static VisualElement CreateIMGUISection(SerializedObject serializedObject, string title, string[] propertyNames)
 		{
 			var section = new Box
@@ -99,5 +134,7 @@ namespace Fsi.Settings
 
 			return section;
 		}
+		
+		#endregion
 	}
 }
