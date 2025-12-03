@@ -1,15 +1,26 @@
 using System;
 using Fsi.Ui.Labels;
-using Fsi.Ui.Spacers;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
+using Spacer = Fsi.Ui.Dividers.Spacer;
 
 namespace Fsi.Settings
 {
 	public static class SettingsEditorUtility
 	{
 		private const float SettingsMargin = 5f;
+
+		public static SettingsProvider CreateSettingsProvider(string label, string path, Action<string, VisualElement> onActivate)
+		{
+			SettingsProvider provider = new(path, SettingsScope.Project)
+			                            {
+				                            label = label,
+				                            activateHandler = onActivate,
+			                            };
+        
+			return provider;
+		}
 		
 		public static VisualElement CreateSettingsPage(SerializedObject prop, string name)
 		{
@@ -26,8 +37,9 @@ namespace Fsi.Settings
             
 			Label title = new($"{name} Settings");
 			scroll.Add(title);
-			scroll.Add(new Spacer());
-			// Can maybe put a toolbar here
+			// scroll.Add(new Spacer());
+			// Can maybe put a toolbar here...
+			
 			scroll.Add(new Spacer());
 			scroll.Add(new InspectorElement(prop));
 			scroll.Add(new Spacer());

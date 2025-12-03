@@ -4,7 +4,7 @@
         <engine:VisualElement name="header" style="flex-grow: 0;">
             <engine:Label text="Settings to Create" style="-unity-font-style: bold;" />
         </engine:VisualElement>
-        <Fsi.Ui.Spacers.Spacer />
+        <Fsi.Ui.Dividers.Spacer />
         <engine:VisualElement name="settings" style="flex-grow: 0;">
             <engine:VisualElement name="location_entry" style="flex-grow: 0; flex-direction: row;">
                 <engine:Label text="Location" name="location_text" style="width: 33%;" />
@@ -16,7 +16,7 @@
                 <engine:TextField placeholder-text="Enter name..." name="name_field" hide-placeholder-on-focus="true" style="width: 66%;" />
             </engine:VisualElement>
         </engine:VisualElement>
-        <Fsi.Ui.Spacers.Spacer />
+        <Fsi.Ui.Dividers.Spacer />
         <engine:VisualElement name="buttons" style="flex-grow: 0; flex-direction: row;">
             <engine:VisualElement name="space" style="flex-grow: 1; width: 50%;" />
             <engine:Button text="Confirm" name="confirm_button" style="width: 50%;" />

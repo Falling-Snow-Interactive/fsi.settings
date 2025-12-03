@@ -1,3 +1,4 @@
+using Fsi.Ui.Spacers;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
@@ -22,16 +23,16 @@ public static class [NAME]SettingsProvider
         root.style.marginRight = 5;
         root.style.marginLeft = 5;
         root.style.marginBottom = 5;
+        
+        ScrollView scroll = new();
+        root.Add(scroll);
     
         SerializedObject settingsProp = [NAME]Settings.GetSerializedSettings();
         
         Label title = new("[NAME] Settings");
-        root.Add(title);
-        
-        root.Add(new Spacer());
-        
-        root.Add(new InspectorElement(settingsProp));
-        
-        root.Bind(settingsProp);
+        scroll.Add(title);
+        scroll.Add(new Spacer());
+        scroll.Add(new InspectorElement(settingsProp));
+        scroll.Bind(settingsProp);
     }
 }
