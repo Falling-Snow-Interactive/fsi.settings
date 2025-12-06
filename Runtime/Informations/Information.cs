@@ -10,7 +10,7 @@ namespace fsi.settings.Informations
         [SerializeField]
         private string name;
         
-        public abstract T Type { get; }
+        public abstract T ID { get; }
         
         public void OnBeforeSerialize()
         {
@@ -21,7 +21,7 @@ namespace fsi.settings.Informations
 
         public override string ToString()
         {
-            string s = Type != null ? Type.ToString() : "not set";
+            string s = ID != null ? ID.ToString() : "not set";
             return s;
         }
     }

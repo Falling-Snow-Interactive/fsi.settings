@@ -25,7 +25,7 @@ namespace fsi.settings.Informations
             informationLookup = new Dictionary<T, TInfo>();
             foreach (TInfo info in this.information)
             {
-                informationLookup[info.Type] = info;
+                informationLookup[info.ID] = info;
             }
 
             return informationLookup;
