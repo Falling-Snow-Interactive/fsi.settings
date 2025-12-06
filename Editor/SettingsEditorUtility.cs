@@ -9,6 +9,7 @@ namespace Fsi.Settings
 {
 	public static class SettingsEditorUtility
 	{
+		private const string StylesheetPath = "Packages/com.fallingsnowinteractive.ui/Editor/FsiUi.uss";
 		private const float SettingsMargin = 5f;
 
 		public static SettingsProvider CreateSettingsProvider(string label, string path, Action<string, VisualElement> onActivate)
@@ -32,10 +33,16 @@ namespace Fsi.Settings
 					                    marginRight = SettingsMargin,
 					                    marginBottom = SettingsMargin,
 					                    marginLeft = SettingsMargin,
-				                    }
+				                    },
 			                    };
-            
+			StyleSheet uss = AssetDatabase.LoadAssetAtPath<StyleSheet>(StylesheetPath);
+			if (uss)
+			{
+				scroll.styleSheets.Add(uss);
+			}
+
 			Label title = new($"{name} Settings");
+			title.AddToClassList("title");
 			scroll.Add(title);
 			// scroll.Add(new Spacer());
 			// Can maybe put a toolbar here...
