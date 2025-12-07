@@ -44,6 +44,7 @@ namespace Fsi.Settings
 			Label title = new($"{name} Settings");
 			title.AddToClassList("title");
 			scroll.Add(title);
+			
 			// scroll.Add(new Spacer());
 			// Can maybe put a toolbar here...
 			
