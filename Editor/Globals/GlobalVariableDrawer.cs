@@ -12,13 +12,13 @@ namespace Fsi.Settings.Globals
 
         private const string NameTextId = "name_text";
         private const string OverrideToggleId = "override_toggle";
-        protected const string OverrideFieldId = "override_field";
+        private const string OverrideFieldId = "override_field";
 
         private const string UseOverridePropName = "useOverride";
         private const string OverridePropName = "overrideValue";
 
-        protected Toggle useOverrideToggle;
-        protected TField overrideField;
+        private Toggle useOverrideToggle;
+        private TField overrideField;
         
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {

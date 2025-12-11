@@ -9,7 +9,7 @@ namespace Fsi.Settings
 {
 	public static class SettingsEditorUtility
 	{
-		private const string StylesheetPath = "Packages/com.fallingsnowinteractive.ui/Editor/FsiUi.uss";
+		private const string StylesheetPath = "Packages/com.fallingsnowinteractive.ui/Assets/FsiUi.uss";
 		private const float SettingsMargin = 5f;
 
 		public static SettingsProvider CreateSettingsProvider(string label, string path, Action<string, VisualElement> onActivate)
@@ -18,6 +18,20 @@ namespace Fsi.Settings
 			                            {
 				                            label = label,
 				                            activateHandler = onActivate,
+			                            };
+        
+			return provider;
+		}
+
+		public static SettingsProvider CreateSettingsProvider(string label, string path, SerializedObject prop)
+		{
+			SettingsProvider provider = new(path, SettingsScope.Project)
+			                            {
+				                            label = label,
+				                            activateHandler = (s, element) =>
+				                                               {
+					                                               element.Add(CreateSettingsPage(prop, label));
+				                                               },
 			                            };
         
 			return provider;
