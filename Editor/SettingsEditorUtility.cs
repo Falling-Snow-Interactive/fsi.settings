@@ -1,8 +1,10 @@
 using System;
-using Fsi.DataSystem.Libraries;
+using System.Linq;
+using System.Reflection;
 using Fsi.Ui.Labels;
 using UnityEditor;
 using UnityEditor.UIElements;
+using UnityEngine;
 using UnityEngine.UIElements;
 using Spacer = Fsi.Ui.Dividers.Spacer;
 
@@ -13,19 +15,13 @@ namespace Fsi.Settings
 		private const string StylesheetPath = "Packages/com.fallingsnowinteractive.ui/Assets/FsiUi.uss";
 		private const float SettingsMargin = 5f;
 
-		public static SettingsProvider CreateSettingsProvider(string label, string path, Action<string, VisualElement> onActivate)
+		public static SettingsProvider CreateSettingsProvider<T>(string label, string path, SerializedObject prop)
 		{
-			SettingsProvider provider = new(path, SettingsScope.Project)
-			                            {
-				                            label = label,
-				                            activateHandler = onActivate,
-			                            };
-        
-			return provider;
-		}
-
-		public static SettingsProvider CreateSettingsProvider(string label, string path, SerializedObject prop)
-		{
+			if (!HasSettings(typeof(T)))
+			{
+				return null;
+			}
+			
 			SettingsProvider provider = new(path, SettingsScope.Project)
 			                            {
 				                            label = label,
@@ -70,6 +66,24 @@ namespace Fsi.Settings
 			scroll.Bind(prop);
 
 			return scroll;
+		}
+
+		public static bool HasSettings(Type type)
+		{
+			const BindingFlags flags = BindingFlags.Instance 
+			                           | BindingFlags.Public 
+			                           | BindingFlags.NonPublic;
+
+			return type
+			       .GetFields(flags)
+			       .Any(field =>
+				            !field.IsStatic &&
+				            !field.IsDefined(typeof(NonSerializedAttribute)) &&
+				            (
+					            field.IsPublic ||
+					            field.IsDefined(typeof(SerializeField))
+				            )
+			           );
 		}
 		
 		#region Obsolete
