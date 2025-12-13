@@ -15,9 +15,9 @@ namespace Fsi.Settings
 		private const string StylesheetPath = "Packages/com.fallingsnowinteractive.ui/Assets/FsiUi.uss";
 		private const float SettingsMargin = 5f;
 
-		public static SettingsProvider CreateSettingsProvider<T>(string label, string path, SerializedObject prop)
+		public static SettingsProvider CreateSettingsProvider<T>(string label, string path, SerializedObject prop, bool force = false)
 		{
-			if (!HasSettings(typeof(T)))
+			if (!HasSettings(typeof(T)) && !force)
 			{
 				return null;
 			}
@@ -84,6 +84,15 @@ namespace Fsi.Settings
 					            field.IsDefined(typeof(SerializeField))
 				            )
 			           );
+		}
+
+		public static void SetUSS(VisualElement root)
+		{
+			StyleSheet uss = AssetDatabase.LoadAssetAtPath<StyleSheet>(StylesheetPath);
+			if (uss)
+			{
+				root.styleSheets.Add(uss);
+			}
 		}
 		
 		#region Obsolete
