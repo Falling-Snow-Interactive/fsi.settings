@@ -1,12 +1,11 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using Fsi.Ui.Labels;
+using Fsi.Ui.Dividers;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Spacer = Fsi.Ui.Dividers.Spacer;
 
 namespace Fsi.Settings
 {
@@ -15,17 +14,17 @@ namespace Fsi.Settings
 		private const string StylesheetPath = "Packages/com.fallingsnowinteractive.ui/Assets/FsiUi.uss";
 		private const float SettingsMargin = 5f;
 
-		public static SettingsProvider CreateSettingsProvider<T>(string label, string path, SerializedObject prop, bool force = false)
+		public static SettingsProvider CreateSettingsProvider<T>(string label, string path, SerializedObject prop)
 		{
-			if (!HasSettings(typeof(T)) && !force)
+			if (!HasSettings(typeof(T)))
 			{
-				return null;
+				return default;
 			}
 			
 			SettingsProvider provider = new(path, SettingsScope.Project)
 			                            {
 				                            label = label,
-				                            activateHandler = (s, element) =>
+				                            activateHandler = (_, element) =>
 				                                               {
 					                                               element.Add(CreateSettingsPage(prop, label));
 				                                               },
@@ -56,12 +55,8 @@ namespace Fsi.Settings
 			title.AddToClassList("title");
 			scroll.Add(title);
 			
-			// scroll.Add(new Spacer());
-			// Can maybe put a toolbar here...
-			
-			scroll.Add(new Spacer());
+			scroll.Add(new Divider());
 			scroll.Add(new InspectorElement(prop));
-			scroll.Add(new Spacer());
 			
 			scroll.Bind(prop);
 
@@ -77,16 +72,16 @@ namespace Fsi.Settings
 			return type
 			       .GetFields(flags)
 			       .Any(field =>
-				            !field.IsStatic &&
-				            !field.IsDefined(typeof(NonSerializedAttribute)) &&
-				            (
-					            field.IsPublic ||
-					            field.IsDefined(typeof(SerializeField))
-				            )
+				            !field.IsStatic 
+				            && !field.IsDefined(typeof(NonSerializedAttribute)) 
+				            && (
+					               field.IsPublic 
+					               || field.IsDefined(typeof(SerializeField))
+					               )
 			           );
 		}
 
-		public static void SetUSS(VisualElement root)
+		public static void SetUss(VisualElement root)
 		{
 			StyleSheet uss = AssetDatabase.LoadAssetAtPath<StyleSheet>(StylesheetPath);
 			if (uss)
@@ -94,105 +89,5 @@ namespace Fsi.Settings
 				root.styleSheets.Add(uss);
 			}
 		}
-		
-		#region Obsolete
-		
-		[Obsolete]
-		public static VisualElement CreateSettingsProperty(string name, SerializedObject serializedObject)
-		{
-			SerializedProperty property = serializedObject.FindProperty(name);
-			PropertyField field = new(property);
-			return field;
-		}
-		
-		[Obsolete]
-		public static VisualElement CreateTitle(string title, string description)
-		{
-			VisualElement titleSection = new() { style = { flexGrow = 0, flexShrink = 0 } };
-			Label titleLabel = LabelUtility.Title(title);
-			Label descriptionLabel = new Label(description);
-			
-			titleSection.Add(titleLabel);
-			titleSection.Add(descriptionLabel);
-			titleSection.Add(new Spacer());
-
-			return titleSection;
-		}
-
-		[Obsolete]
-		public static VisualElement CreateSection(string name, VisualElement[] categories)
-		{
-			var foldout = new Foldout() { text = name, value = EditorPrefs.GetBool($"Section.{name}", false) };
-			foldout.RegisterValueChangedCallback(evt =>
-			                                     {
-				                                     EditorPrefs.SetBool($"Section.{name}", foldout.value);
-			                                     });
-
-			foreach (var cat in categories)
-			{
-				foldout.Add(cat);
-			}
-
-			return foldout;
-		}
-		
-		[Obsolete]
-		public static VisualElement CreateCategory(SerializedObject serializedObject, string name, string[] properties)
-		{
-			var foldout = new Foldout() { text = name, value = EditorPrefs.GetBool($"Category.{name}", false) };
-			foldout.RegisterValueChangedCallback(evt =>
-			                                     {
-				                                     EditorPrefs.SetBool($"Category.{name}", evt.newValue);
-			                                     });
-
-			foreach (string p in properties)
-			{
-				var prop = new PropertyField(serializedObject.FindProperty(p));
-				prop.Bind(serializedObject);
-				foldout.Add(prop);
-			}
-
-			return foldout;
-		}
-		
-		[Obsolete]
-		public static VisualElement CreateIMGUISection(SerializedObject serializedObject, string title, string[] propertyNames)
-		{
-			var section = new Box
-			              {
-				              style =
-				              {
-					              paddingTop = 10,
-					              paddingBottom = 10,
-					              paddingLeft = 10,
-					              paddingRight = 10,
-					              
-					              marginTop = 5,
-					              marginBottom = 5,
-					              marginLeft = 5,
-					              marginRight = 5,
-				              }
-			              };
-
-			var label = LabelUtility.Section(title);
-			section.Add(label);
-
-			var imguiContainer = new IMGUIContainer(() =>
-			                                        {
-				                                        serializedObject.Update();
-
-				                                        foreach (string propName in propertyNames)
-				                                        {
-					                                        EditorGUILayout.PropertyField(serializedObject.FindProperty(propName));
-					                                        serializedObject.ApplyModifiedProperties();
-				                                        }
-			                                        });
-
-			section.Add(imguiContainer);
-
-			return section;
-		}
-		
-		#endregion
 	}
 }
