@@ -14,7 +14,10 @@ namespace Fsi.Settings
 		private const string StylesheetPath = "Packages/com.fallingsnowinteractive.ui/Assets/FsiUi.uss";
 		private const float SettingsMargin = 5f;
 
-		public static SettingsProvider CreateSettingsProvider<T>(string label, string path, SerializedObject prop)
+		public static SettingsProvider CreateSettingsProvider<T>(string label, 
+		                                                         string path, 
+		                                                         SerializedObject prop,
+		                                                         Action onValidate = null)
 		{
 			if (!HasSettings(typeof(T)))
 			{
@@ -25,15 +28,15 @@ namespace Fsi.Settings
 			                            {
 				                            label = label,
 				                            activateHandler = (_, element) =>
-				                                               {
-					                                               element.Add(CreateSettingsPage(prop, label));
-				                                               },
+				                                              {
+					                                              element.Add(CreateSettingsPage(prop, label, onValidate));
+				                                              },
 			                            };
         
 			return provider;
 		}
-		
-		public static VisualElement CreateSettingsPage(SerializedObject prop, string name)
+
+		public static VisualElement CreateSettingsPage(SerializedObject prop, string name, Action onValidate = null)
 		{
 			ScrollView scroll = new()
 			                    {
@@ -59,6 +62,15 @@ namespace Fsi.Settings
 			scroll.Add(new InspectorElement(prop));
 			
 			scroll.Bind(prop);
+
+			if (onValidate != null)
+			{
+				scroll.Add(new Divider());
+				
+				Button validateButton = new() { text = "Validate" };
+				validateButton.clicked += onValidate;
+				scroll.Add(validateButton);
+			}
 
 			return scroll;
 		}
